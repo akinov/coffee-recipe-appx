@@ -123,3 +123,9 @@ dist
 
 # macOS specific files
 .DS_Store
+
+# Firebase設定ファイル
+.firebaserc
+firebase.json
+firestore.rules
+firestore.indexes.json
