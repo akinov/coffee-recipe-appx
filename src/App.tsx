@@ -1,6 +1,10 @@
 import './App.css'
 import AuthButtons from './components/AuthButtons'
 import { useAuth } from './auth/AuthContext'
+import RecipeForm from './components/RecipeForm'
+import RecipeList from './components/RecipeList'
+import { createRecipe } from './services/recipeService'
+import { Box } from '@mui/material'
 
 function App() {
   const { currentUser } = useAuth()
@@ -16,7 +20,25 @@ function App() {
         {currentUser ? (
           <div className="welcome-message">
             <h2>ようこそ、{currentUser.displayName}さん</h2>
-            {/* レシピ管理機能をここに追加 */}
+            <Box sx={{ mb: 4 }}>
+              <RecipeForm
+                onSubmit={async (recipeData) => {
+                  try {
+                    await createRecipe({
+                      ...recipeData,
+                      userId: currentUser.uid,
+                      createdAt: new Date(),
+                      updatedAt: new Date()
+                    });
+                    alert('レシピが正常に作成されました');
+                  } catch (err) {
+                    console.error(err);
+                    alert('レシピの作成に失敗しました');
+                  }
+                }}
+              />
+            </Box>
+            <RecipeList userId={currentUser.uid} />
           </div>
         ) : (
           <div className="welcome-message">
